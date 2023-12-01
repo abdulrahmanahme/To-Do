@@ -5,57 +5,69 @@ import 'package:todo/features/todo/data/models/note_model.dart';
 import '../../../../core/error/failure.dart';
 
 abstract class BaseToDoLocalDataSource {
-  Future<Either<Failure, Database>> initDB(String filePath);
-  Future<Either<Failure, Database>> createDB(Database db, int version);
-   Future<Either<Failure,NoteModel>> readNote(int id);
-  Future<Either<Failure,List<NoteModel>>> readAllNotes();
-  Future<Either<Failure,int>> update(NoteModel note);
-  Future<Either<Failure,int>> delete(int id);
-  Future<Either<Failure,dynamic>> close();
+  Future<Database> initDB(String filePath);
+  Future<Database> createDB(Database db, int version);
+  Future<NoteModel> readNote(int id);
+  Future<List<NoteModel>> readAllNotes();
+  Future<int> update(NoteModel note);
+  Future<int> delete(int id);
+  Future<dynamic> close();
+  Future<Database> get database;
 }
 
-class ToDoLocalDataSource extends BaseToDoLocalDataSource  {
+class ToDoLocalDataSource extends BaseToDoLocalDataSource {
+  final ToDoLocalDataSource instance = ToDoLocalDataSource._init();
+
+  ToDoLocalDataSource._init();
+  static Database? _database;
+
   @override
-  Future<Either<Failure, dynamic>> close() {
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+
+    _database = await initDB('notes.db');
+    return _database!;
+  }
+
+  @override
+  Future close() {
     // TODO: implement close
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Database>> createDB(Database db, int version) {
+  Future<Database> createDB(Database db, int version) {
     // TODO: implement createDB
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, int>> delete(int id) {
+  Future<int> delete(int id) {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Database>> initDB(String filePath) {
+  Future<Database> initDB(String filePath) {
     // TODO: implement initDB
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, List<NoteModel>>> readAllNotes() {
+  Future<List<NoteModel>> readAllNotes() {
     // TODO: implement readAllNotes
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, NoteModel>> readNote(int id) {
+  Future<NoteModel> readNote(int id) {
     // TODO: implement readNote
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, int>> update(NoteModel note) {
+  Future<int> update(NoteModel note) {
     // TODO: implement update
     throw UnimplementedError();
   }
-
- 
 }
