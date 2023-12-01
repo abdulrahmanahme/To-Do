@@ -10,7 +10,7 @@ class ReadNoteDBUseCase extends BaseUseCase<Note, ParameterToDo> {
   ReadNoteDBUseCase(this.baseToDoRepository);
   @override
   Future<Either<Failure, Note>> call(ParameterToDo parameter) async {
-    return await baseToDoRepository.readNote(parameter.id!);
+    return await baseToDoRepository.readNote(parameter);
   }
 }
 

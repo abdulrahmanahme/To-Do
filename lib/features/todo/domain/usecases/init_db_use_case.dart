@@ -10,7 +10,7 @@ class InitDBUseCase extends BaseUseCase<Database, ParameterToDo> {
   InitDBUseCase(this.baseToDoRepository);
   @override
   Future<Either<Failure, Database>> call(ParameterToDo parameter) async {
-    return await baseToDoRepository.initDB(parameter.filePath!);
+    return await baseToDoRepository.initDB(parameter);
   }
 }
 

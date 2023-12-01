@@ -11,6 +11,6 @@ class DeleteNoteDBUseCase extends BaseUseCase<int, ParameterToDo> {
 
   @override
   Future<Either<Failure, int>> call(ParameterToDo parameter) async {
-    return await baseToDoRepository.delete(parameter.id!);
+    return await baseToDoRepository.delete(parameter);
   }
 }
