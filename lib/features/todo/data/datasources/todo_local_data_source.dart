@@ -17,9 +17,7 @@ abstract class BaseToDoLocalDataSource {
 }
 
 class ToDoLocalDataSource extends BaseToDoLocalDataSource {
-  final ToDoLocalDataSource instance = ToDoLocalDataSource._init();
-
-  ToDoLocalDataSource._init();
+ 
   static Database? _database;
 
   @override
@@ -32,7 +30,7 @@ class ToDoLocalDataSource extends BaseToDoLocalDataSource {
 
   @override
   Future close() async {
-    final db = await instance.database;
+    final db = await database;
     _database = null;
     db.close();
   }
@@ -52,7 +50,7 @@ CREATE TABLE ${AppConst.tableNotes} (
 
   @override
   Future<int> delete(int id) async {
-    final db = await instance.database;
+    final db = await database;
     return await db.delete(
       AppConst.tableNotes,
       where: '${NoteFields.id} = ?',
@@ -69,7 +67,7 @@ CREATE TABLE ${AppConst.tableNotes} (
 
   @override
   Future<List<NoteModel>> readAllNotes() async {
-    final db = await instance.database;
+    final db = await database;
     final orderBy = '${NoteFields.time} ASC';
     final result = await db.query(AppConst.tableNotes, orderBy: orderBy);
 
@@ -78,7 +76,7 @@ CREATE TABLE ${AppConst.tableNotes} (
 
   @override
   Future<NoteModel> readNote(int id) async {
-    final db = await instance.database;
+    final db = await database;
     final maps = await db.query(
       AppConst.tableNotes,
       columns: NoteFields.values,
@@ -94,7 +92,7 @@ CREATE TABLE ${AppConst.tableNotes} (
 
   @override
   Future<int> update(NoteModel note) async {
-    final db = await instance.database;
+    final db = await database;
     return db.update(
       AppConst.tableNotes,
       note.toJson(),
