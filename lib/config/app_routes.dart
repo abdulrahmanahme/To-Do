@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../features/todo/presentation/pages/home_page.dart';
 
 class AppRoutes {
