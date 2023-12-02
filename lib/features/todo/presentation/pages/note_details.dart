@@ -6,6 +6,7 @@ import 'package:todo/features/todo/data/models/note_model.dart';
 import 'package:todo/features/todo/presentation/pages/edit_note_page.dart';
 import 'package:todo/features/todo/presentation/widgets/show_note_page.dart';
 import '../../../../core/services/services_locator.dart';
+import '../../../../core/toast/toast.dart';
 import '../manager/cubit/todo_cubit.dart';
 
 class NoteDetailPage extends StatefulWidget {
@@ -50,6 +51,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
                     icon: const Icon(Icons.delete,color:AppColors.errorColor,size: 30,),
                     onPressed: () async {
                       await cubit.deleteNote(ParameterToDo(id: widget.noteId));
+                          AppToast.errorBar(message:'Note Deleted Successfully' );
                       Navigator.of(context).pop();
                     },
                   ),

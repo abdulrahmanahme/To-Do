@@ -4,6 +4,7 @@ import 'package:todo/features/todo/data/models/note_model.dart';
 import 'package:todo/features/todo/presentation/widgets/note_widget.dart';
 import '../../../../core/model/parameter_todo_model.dart';
 import '../../../../core/services/services_locator.dart';
+import '../../../../core/toast/toast.dart';
 import '../manager/cubit/todo_cubit.dart';
 import '../widgets/save_button.dart';
 
@@ -54,6 +55,8 @@ class _EditNotePageState extends State<EditNotePage> {
                             title: title,
                             description: description,
                           )));
+                          AppToast.successBar(
+                              message: 'Note Update Successfully');
                         } else {
                           await cubit.createNote(ParameterToDo(
                             note: NoteModel(
@@ -63,6 +66,8 @@ class _EditNotePageState extends State<EditNotePage> {
                               createdTime: DateTime.now(),
                             ),
                           ));
+                          AppToast.successBar(
+                              message: 'Note Create Successfully');
                         }
                         Navigator.of(context).pop();
                       },
@@ -88,4 +93,3 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
       );
 }
-
