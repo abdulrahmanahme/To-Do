@@ -9,9 +9,9 @@ A new Flutter project.
 # Create Note, Delete note, update note 
 # App content
 # First screen home screen to display All notes
-  1-  To create a note press the right button 
-  2 - Add title And description  then press save
-  3 - if you want to delete press the icon delete and if you want to edit press the icon edit
+#  1-  To create a note press the right button 
+#  2 - Add title And description  then press save
+#  3 - if you want to delete press the icon delete and if you want to edit press the icon edit
   
 #
 
