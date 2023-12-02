@@ -14,10 +14,8 @@ class Note extends Equatable {
     required this.description,
     required this.createdTime,
   });
-
-  Note copy({
+Note copy({
     int? id,
-    bool? isImportant,
     int? number,
     String? title,
     String? description,
@@ -30,6 +28,7 @@ class Note extends Equatable {
         description: description ?? this.description,
         createdTime: createdTime ?? this.createdTime,
       );
+  
 
   @override
   List<Object?> get props => [id, number, title, description, createdTime];

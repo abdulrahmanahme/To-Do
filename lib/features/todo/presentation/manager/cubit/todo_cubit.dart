@@ -1,9 +1,15 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:todo/config/app_routes.dart';
 import 'package:todo/core/usecase/use_case.dart';
+import 'package:todo/features/todo/data/models/note_model.dart';
 import '../../../../../core/model/parameter_todo_model.dart';
+import '../../../domain/entities/note_entite.dart';
 import '../../../domain/usecases/close_use_case.dart';
 import '../../../domain/usecases/create_db_use_case.dart';
+import '../../../domain/usecases/create_note_use_case.dart';
 import '../../../domain/usecases/delete_note_use_case.dart';
 import '../../../domain/usecases/init_db_use_case.dart';
 import '../../../domain/usecases/read_all_notes_use_case.dart';
@@ -19,7 +25,8 @@ class ToDoCubit extends Cubit<ToDoState> {
       this.readNoteDBUseCase,
       this.updateNoteDBUseCase,
       this.deleteNoteDBUseCase,
-      this.closeNoteDBUseCase)
+      this.closeNoteDBUseCase,
+      this.createNoteDBUseCase)
       : super(ToDoInitialState());
   final CreateDBUseCase createDBUseCase;
   final InitDBUseCase initDBUseCase;
@@ -28,92 +35,132 @@ class ToDoCubit extends Cubit<ToDoState> {
   final UpdateNoteDBUseCase updateNoteDBUseCase;
   final DeleteNoteDBUseCase deleteNoteDBUseCase;
   final CloseNoteDBUseCase closeNoteDBUseCase;
+  final CreateNoteDBUseCase createNoteDBUseCase;
+  late List<Note> notes;
+  late NoteModel note;
 
-  void createDB(ParameterDB parameter) async {
+  FutureOr<void> createDB(ParameterDB parameter) async {
     emit(CreateDBLoadingState());
     final result = await createDBUseCase(
         ParameterDB(db: parameter.db, version: parameter.version));
     result.fold(
         (l) => {
               print('$l'),
-              emit(CreateDBSuccessState()),
+              emit(CreateDBErrorState()),
             },
         (r) => {
+              emit(CreateDBSuccessState()),
               print('$r'),
-              emit(CreateDBErrorState()),
             });
   }
 
-  void initDB(ParameterToDo parameter) async {
+  FutureOr<void> initDB(ParameterToDo parameter) async {
     emit(InitDBLoadingState());
     final result =
         await initDBUseCase(ParameterToDo(filePath: parameter.filePath));
     result.fold(
         (l) => {
               print('$l'),
-              emit(InitDBSuccessState()),
+              emit(InitDBErrorState()),
             },
         (r) => {
-              emit(InitDBErrorState()),
+              emit(InitDBSuccessState()),
               print('$r'),
             });
   }
 
-  void readAllNote(ParameterToDo parameter) async {
+  FutureOr<void> readAllNote() async {
     emit(ReadAllLoadingState());
+    final result = await readAllNoteDBUseCase(const NoParameter());
+    result.fold(
+        (l) => {
+              print('$l'),
+              emit(ReadAllErrorState()),
+            },
+        (r) => {
+              notes = r,
+              print('$r'),
+              emit(ReadAllSuccessState()),
+            });
+  }
+
+  FutureOr<void> readNote(ParameterToDo parameter) async {
+    emit(ReadNoteLoadingState());
     final result = await readNoteDBUseCase(ParameterToDo(id: parameter.id));
     result.fold(
         (l) => {
               print('$l'),
-              emit(ReadAllSuccessState()),
+              emit(ReadNoteErrorState()),
             },
         (r) => {
+              note = r,
               print('$r'),
-              emit(ReadAllErrorState()),
+              emit(ReadNoteSuccessState()),
             });
   }
 
-  void updateNote(ParameterToDo parameter) async {
-    emit(ReadNoteLoadingState());
+  FutureOr<void> updateNote(ParameterToDo parameter) async {
+    emit(UpdateNoteLoadingState());
     final result =
         await updateNoteDBUseCase(ParameterToDo(note: parameter.note));
     result.fold(
         (l) => {
-              print('$l'),
-              emit(ReadNoteSuccessState()),
+              print('eeeee$l'),
+              emit(UpdateNoteErrorState()),
             },
         (r) => {
-              print('$r'),
-              emit(ReadNoteErrorState()),
+              print(' rrrrrrr${r}'),
+              emit(UpdateNoteSuccessState()),
             });
   }
 
-  void deleteNote(ParameterToDo parameter) async {
+  FutureOr<void> deleteNote(ParameterToDo parameter) async {
     emit(UpdateNoteLoadingState());
 
     final result = await deleteNoteDBUseCase(ParameterToDo(id: parameter.id));
     result.fold(
         (l) => {
-              emit(UpdateNoteSuccessState()),
+              emit(UpdateNoteErrorState()),
               print('$l'),
             },
         (r) => {
-              emit(UpdateNoteErrorState()),
+              emit(UpdateNoteSuccessState()),
               print('$r'),
             });
   }
 
-  void closeNote(NoParameter noParameter) async {
+  FutureOr<void> closeNote(NoParameter noParameter) async {
     emit(CloseNoteLoadingState());
     final result = await closeNoteDBUseCase(noParameter);
     result.fold(
         (l) => {
-              emit(CloseNoteSuccessState()),
+              emit(CloseNoteErrorState()),
               print('$l'),
             },
         (r) => {
-              emit(CloseNoteErrorState()),
+              emit(CloseNoteSuccessState()),
               print('$r'),
             });
+  }
+
+  FutureOr<void> createNote(ParameterToDo parameter) async {
+    emit(CreateNoteLoadingState());
+    final result =
+        await createNoteDBUseCase(ParameterToDo(note: parameter.note));
+    result.fold(
+        (l) => {
+              emit(CreateNoteErrorState()),
+              print('$l'),
+            },
+        (r) => {
+              emit(CreateNoteSuccessState()),
+              print('$r'),
+              print('pppppppppppp'),
+            });
+  }
+
+  void editNote({required NoteModel note, required int id, context}) async {
+    Navigator.popAndPushNamed(context, AppRoutes.editNotePage, arguments: note);
+    await readNote(ParameterToDo(id: id));
   }
 }

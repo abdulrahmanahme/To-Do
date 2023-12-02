@@ -51,6 +51,14 @@ final class UpdateNoteSuccessState extends ToDoState {}
 
 final class UpdateNoteErrorState extends ToDoState {}
 
+///////Create NOTE State
+final class CreateNoteLoadingState extends ToDoState {}
+
+final class CreateNoteSuccessState extends ToDoState {}
+
+final class CreateNoteErrorState extends ToDoState {}
+
+
 ///////Close NOTE State
 final class CloseNoteLoadingState extends ToDoState {}
 

@@ -12,7 +12,7 @@ class CreateDBUseCase extends BaseUseCase<Database, ParameterDB> {
 
   @override
   Future<Either<Failure, Database>> call(ParameterDB parameter) async {
-    return await baseToDoRepository.createDB(parameter, parameter);
+    return await baseToDoRepository.createDB(ParameterDB(db:parameter.db,version: parameter.version));
   }
 }
 

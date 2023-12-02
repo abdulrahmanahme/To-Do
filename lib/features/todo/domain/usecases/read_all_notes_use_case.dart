@@ -6,11 +6,11 @@ import '../../../../core/usecase/use_case.dart';
 import '../entities/note_entite.dart';
 import '../repositories/base_todo_repositories.dart';
 
-class ReadAllNoteDBUseCase extends BaseUseCase<List<Note>, ParameterToDo> {
+class ReadAllNoteDBUseCase extends BaseUseCase<List<Note>,NoParameter> {
   final BaseToDoRepository baseToDoRepository;
   ReadAllNoteDBUseCase(this.baseToDoRepository);
   @override
-  Future<Either<Failure,List<Note>>> call(ParameterToDo parameter) async {
+  Future<Either<Failure,List<Note>>> call(NoParameter parameter) async {
     return await baseToDoRepository.readAllNotes();
   }
 }

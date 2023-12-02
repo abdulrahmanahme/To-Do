@@ -6,6 +6,7 @@ import '../../features/todo/data/repositories/todo_repertory.dart';
 import '../../features/todo/domain/repositories/base_todo_repositories.dart';
 import '../../features/todo/domain/usecases/close_use_case.dart';
 import '../../features/todo/domain/usecases/create_db_use_case.dart';
+import '../../features/todo/domain/usecases/create_note_use_case.dart';
 import '../../features/todo/domain/usecases/delete_note_use_case.dart';
 import '../../features/todo/domain/usecases/init_db_use_case.dart';
 import '../../features/todo/domain/usecases/read_all_notes_use_case.dart';
@@ -19,7 +20,7 @@ class ServicesLocator {
   void init() {
     /// BLOC
     sl.registerFactory(
-        () => ToDoCubit(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+        () => ToDoCubit(sl(), sl(), sl(), sl(), sl(), sl(), sl(),sl()));
 
     /////UseCase
     sl.registerLazySingleton(() => InitDBUseCase(sl()));
@@ -29,6 +30,8 @@ class ServicesLocator {
     sl.registerLazySingleton(() => UpdateNoteDBUseCase(sl()));
     sl.registerLazySingleton(() => DeleteNoteDBUseCase(sl()));
     sl.registerLazySingleton(() => CloseNoteDBUseCase(sl()));
+    sl.registerLazySingleton(() => CreateNoteDBUseCase(sl()));
+
 
     // Repository
     sl.registerLazySingleton<BaseToDoRepository>(() => ToDoRepertory(sl()));

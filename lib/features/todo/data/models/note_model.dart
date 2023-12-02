@@ -10,11 +10,27 @@ class NoteModel extends Note {
       required super.createdTime});
 
   static NoteModel fromJson(Map<String, Object?> json) => NoteModel(
-        id: json[NoteFields.id] as int?,
+        id: json[NoteFields.id] as int,
         number: json[NoteFields.number] as int,
         title: json[NoteFields.title] as String,
         description: json[NoteFields.description] as String,
         createdTime: DateTime.parse(json[NoteFields.time] as String),
+      );
+      
+  @override
+  NoteModel copy({
+    int? id,
+    int? number,
+    String? title,
+    String? description,
+    DateTime? createdTime,
+  }) =>
+      NoteModel(
+        id: id ?? this.id,
+        number: number ?? this.number,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        createdTime: createdTime ?? this.createdTime,
       );
 
   Map<String, Object?> toJson() => {
