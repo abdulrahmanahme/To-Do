@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/features/todo/data/models/note_model.dart';
+import 'package:todo/features/todo/presentation/widgets/edit_note_page.dart';
 import 'package:todo/features/todo/presentation/widgets/note_widget.dart';
-import '../../../../core/model/parameter_todo_model.dart';
 import '../../../../core/services/services_locator.dart';
-import '../../../../core/toast/toast.dart';
 import '../manager/cubit/todo_cubit.dart';
-import '../widgets/save_button.dart';
 
 class EditNotePage extends StatefulWidget {
   const EditNotePage({
@@ -24,7 +22,6 @@ class _EditNotePageState extends State<EditNotePage> {
   late int number;
   late String title;
   late String description;
-  late String image;
   @override
   void initState() {
     super.initState();
@@ -43,35 +40,12 @@ class _EditNotePageState extends State<EditNotePage> {
             return Scaffold(
                 appBar: AppBar(
                   actions: [
-                    SaveButton(
-                      title: title,
-                      description: description,
-                      onPressed: () async {
-                        final isUpdating = widget.note != null;
-                        if (isUpdating) {
-                          await cubit.updateNote(ParameterToDo(
-                              note: widget.note!.copy(
-                            number: number,
-                            title: title,
-                            description: description,
-                          )));
-                          AppToast.successBar(
-                              message: 'Note Update Successfully');
-                        } else {
-                          await cubit.createNote(ParameterToDo(
-                            note: NoteModel(
-                              title: title,
-                              number: number,
-                              description: description,
-                              createdTime: DateTime.now(),
-                            ),
-                          ));
-                          AppToast.successBar(
-                              message: 'Note Create Successfully');
-                        }
-                        Navigator.of(context).pop();
-                      },
-                    ),
+                    EditNotePageWidget(
+                        title: title,
+                        description: description,
+                        widget: widget,
+                        cubit: cubit,
+                        number: number),
                   ],
                   elevation: 2,
                 ),

@@ -8,7 +8,9 @@ class AppStrings {
   static String save = 'Save';
   static String description = 'Description ';
   static String time = 'Time ';
-
+  static String noteDeleted = 'Note Deleted Successfully';
+  static String noteUpdate = 'Note Update Successfully';
+  static String noteCreate = 'Note Create Successfully';
 
 
 
